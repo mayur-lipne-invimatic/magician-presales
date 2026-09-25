@@ -11,13 +11,14 @@ provision:
 
   - uses: aadApp/create
     with:
-      name: Magician ${{APP_NAME_SUFFIX}}
+      name: IFS ${{APP_NAME_SUFFIX}}
       generateClientSecret: true
       signInAudience: AzureADMultipleOrgs
     writeToEnvironmentFile:
       clientId: BOT_ID
       clientSecret: SECRET_BOT_PASSWORD
       objectId: BOT_OBJECT_ID
+      tenantId: BOT_TENANT_ID
 
   - uses: arm/deploy
     with:
@@ -29,15 +30,6 @@ provision:
           deploymentName: Create-resources-for-bot
       # 👇 Ensures the toolkit downloads and uses this Bicep version (avoids ENOENT)
       bicepCliVersion: v0.24.24
-
-  - uses: botFramework/create
-    with:
-      botId: ${{BOT_ID}}
-      name: ${{BOT_NAME}}
-      messagingEndpoint: ${{BOT_ENDPOINT}}/api/messages
-      description: ""
-      channels:
-        - name: msteams
 
   - uses: teamsApp/validateManifest
     with:

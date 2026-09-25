@@ -29,7 +29,21 @@ param botAppId string
 @description('Bot AAD app client secret created by aadApp/create (== SECRET_BOT_PASSWORD).')
 param botAppPassword string
 
-// Optional MSI for Azure resource access (NOT used for Bot Framework auth)
+@description('Tenant ID for the single-tenant bot registration (== BOT_TENANT_ID).')
+param botAppTenantId string
+
+@maxLength(42)
+@minLength(4)
+@description('Azure Bot resource name. Separate from the web app name.')
+param botServiceName string
+
+@description('Azure Bot SKU. The one SingleTenant bot here that receives channel messages is S1.')
+param botServiceSku string = 'S1'
+
+// Optional MSI for Azure resource access (NOT used for Bot Framework auth). The bot cannot
+// authenticate as this identity: a UserAssignedMSI registration has only a managed-identity
+// service principal and no Entra app registration, so Teams rejects the manifest's RSC block
+// with "Requested permission is not recognized" and ChannelMessage.Read.Group is unavailable.
 resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: identityName
   location: location
@@ -62,7 +76,7 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
         { name: 'MicrosoftAppId', value: botAppId }
         { name: 'MicrosoftAppPassword', value: botAppPassword }
         { name: 'MicrosoftAppType', value: 'SingleTenant' }
-        { name: 'MicrosoftAppTenantId', value: tenant().tenantId }
+        { name: 'MicrosoftAppTenantId', value: botAppTenantId }
       ]
       ftpsState: 'FtpsOnly'
     }
@@ -76,6 +90,38 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
   }
   tags: {
     'botDisplayName': botDisplayName
+  }
+}
+
+// Azure Bot registration (replaces the dev.botframework.com registration).
+resource botService 'Microsoft.BotService/botServices@2022-09-15' = {
+  kind: 'azurebot'
+  location: 'global'
+  name: botServiceName
+  properties: {
+    displayName: botDisplayName
+    endpoint: 'https://${webApp.properties.defaultHostName}/api/messages'
+    msaAppId: botAppId
+    msaAppType: 'SingleTenant'
+    msaAppTenantId: botAppTenantId
+  }
+  sku: {
+    name: botServiceSku
+  }
+}
+
+resource botServiceMsTeamsChannel 'Microsoft.BotService/botServices/channels@2022-09-15' = {
+  parent: botService
+  location: 'global'
+  name: 'MsTeamsChannel'
+  properties: {
+    channelName: 'MsTeamsChannel'
+    // Adding the channel through the portal makes you accept the Teams terms of service;
+    // a template-created channel defaults to unaccepted. The working bots have it accepted.
+    properties: {
+      acceptedTerms: true
+      isEnabled: true
+    }
   }
 }
 

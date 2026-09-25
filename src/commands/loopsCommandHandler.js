@@ -14,7 +14,7 @@ const {
 const axios = require('axios'); // Import axios for making HTTP requests (assuming it's already imported elsewhere);
 
 // Constants
-const BACKEND_URL = `https://api.${process.env.LOOPS_HOST}/conversation/v1/webhooks/msteams/events`;
+const BACKEND_URL = 'https://api.presalestest.theloops.ai/conversation/v1/webhooks/msteams/events';
 
 // Simple in-memory idempotency guard for commands (suppresses duplicates within a short window)
 const __seenCommands = new Map(); // key -> timestamp

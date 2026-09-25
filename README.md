@@ -20,11 +20,11 @@ This app template is built on top of [Microsoft Teams SDK](https://aka.ms/teams-
 > For local debugging using Microsoft 365 Agents Toolkit CLI, you need to do some extra steps described in [Set up your Microsoft 365 Agents Toolkit CLI for local debugging](https://aka.ms/teamsfx-cli-debugging).
 
 1. First, select the Microsoft 365 Agents Toolkit icon on the left in the VS Code toolbar.
-2. Press F5 to start debugging which launches your app in Microsoft 365 Agents Playground using a web browser. Select `Debug in Microsoft 365 Agents Playground`.
-3. The browser will pop up to open Microsoft 365 Agents Playground.
+2. Press F5 to start debugging. Select `Debug in Teams (Edge)` or `Debug in Teams (Chrome)`.
+3. Teams will open with the app installed for sideloading.
 4. You will receive a welcome message from the bot, and you can send anything to the bot to get an echoed response.
 
-**Congratulations**! You are running an application that can now interact with users in Microsoft 365 Agents Playground:
+**Congratulations**! You are running an application that can now interact with users in Microsoft Teams:
 
 ![basic bot](./img/echo-bot.png)
 
@@ -51,7 +51,6 @@ The following are Microsoft 365 Agents Toolkit specific project files. You can [
 | - | - |
 |`m365agents.yml`|This is the main Microsoft 365 Agents Toolkit project file. The project file defines two primary things:  Properties and configuration Stage definitions. |
 |`m365agents.local.yml`|This overrides `m365agents.yml` with actions that enable local execution and debugging.|
-|`m365agents.playground.yml`| This overrides `m365agents.yml` with actions that enable local execution and debugging in Microsoft 365 Agents Playground.|
 
 ## Extend the Basic Bot template
 
