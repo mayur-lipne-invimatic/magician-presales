@@ -4,9 +4,11 @@
   "parameters": {
     "resourceBaseName": { "value": "commandbot${{RESOURCE_SUFFIX}}" },
     "webAppSKU":        { "value": "B1" },
-    "botDisplayName":   { "value": "Magician ${{APP_NAME_SUFFIX}}" },
+    "botDisplayName":   { "value": "IFS Loops ${{APP_NAME_SUFFIX}}" },
 
     "botAppId":         { "value": "${{BOT_ID}}" },
-    "botAppPassword":   { "value": "${{SECRET_BOT_PASSWORD}}" }
+    "botAppPassword":   { "value": "${{SECRET_BOT_PASSWORD}}" },
+    "botAppTenantId":   { "value": "${{BOT_TENANT_ID}}" },
+    "botServiceName":   { "value": "ifsloopspresalestest" }
   }
 }

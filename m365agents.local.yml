@@ -1,14 +1,14 @@
-# yaml-language-server: $schema=https://aka.ms/m365-agents-toolkits/v1.11/yaml.schema.json
+# yaml-language-server: $schema=https://aka.ms/m365-agents-toolkits/v1.9/yaml.schema.json
 # Visit https://aka.ms/teamsfx-v5.0-guide for details on this file
 # Visit https://aka.ms/teamsfx-actions for details on actions
-version: v1.11
+version: v1.9
 
 provision:
   # Creates an app
   - uses: teamsApp/create
     with:
       # app name
-      name: Magician Sandbox${{APP_NAME_SUFFIX}}
+      name: IFS Loops {{APP_NAME_SUFFIX}}
     # Write the information of created resources into environment file for
     # the specified environment variable(s).
     writeToEnvironmentFile:
@@ -18,7 +18,7 @@ provision:
   - uses: aadApp/create
     with:
       # The Microsoft Entra application's display name
-      name: Magician Sandbox${{APP_NAME_SUFFIX}}
+      name: IFS Loops ${{APP_NAME_SUFFIX}}
       generateClientSecret: true
       signInAudience: AzureADMultipleOrgs
     writeToEnvironmentFile:
@@ -33,7 +33,7 @@ provision:
   - uses: botFramework/create
     with:
       botId: ${{BOT_ID}}
-      name: Magician Sandbox
+      name: IFS Loops PresalesTest
       messagingEndpoint: ${{BOT_ENDPOINT}}/api/messages
       description: ""
       channels:
@@ -81,3 +81,4 @@ deploy:
         BOT_ID: ${{BOT_ID}}
         BOT_PASSWORD: ${{SECRET_BOT_PASSWORD}}
         BOT_TYPE: 'SingleTenant'
+        BOT_TENANT_ID: ${{BOT_TENANT_ID}}
